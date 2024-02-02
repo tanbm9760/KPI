@@ -19,7 +19,6 @@ st.set_page_config(page_title="KPI Dashboard WebApp",
 # ----USER AUTHENTICATION----   
 names = ["Admin"]
 usernames = ["Admin"]
-
 # Load hashed passwords
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
@@ -71,7 +70,7 @@ if authenticator_status:
     # ----MAINPAGE----       
     excel_name = './data/' + str(year_selected) + '-' + str(month_selected) +'.xlsx'
     checkfile = os.path.isfile(excel_name)
-    @st.cache
+    
     #Hàm tạo chỉ số thống kê
     def statistical_index(dataframe):
         #-total-
