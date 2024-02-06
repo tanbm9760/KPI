@@ -139,7 +139,7 @@ if authenticator_status:
             }"""
         ):
             st.plotly_chart(fig_work_bar, use_container_width= True)   
-    # RANKING TOP WORK BY DEPARTMENT
+    #----RANKING TOP WORK BY DEPARTMENT----
     def ranktop5high_index(key,css,dfname,colvalue,unit):
         with stylable_container(
                     key=key,
@@ -313,7 +313,7 @@ if authenticator_status:
                     'Name',
                     '',
                 )
-    #----------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------
     def fig_coef_his(dataframe):
         #-config-
         fig_coef_his = px.histogram(
@@ -469,7 +469,7 @@ if authenticator_status:
     def highlight_columns(col):
         color = 'rgba(255,127,14,0.7)' if col.name in ['Kpi Final', 'Coefficient'] else 'rgba(11,58,117,0.7)' 
         return ['background-color: {}'.format(color) for _ in col]
-    ###############################################################################################
+    ###################################################################
     if checkfile == True:
         df = pd.read_excel(io=excel_name, 
                     engine='openpyxl', 
@@ -478,9 +478,9 @@ if authenticator_status:
                     usecols='B:Q',
                     nrows=1000,
         )
-        if selected_sites == "NNC" :
+        if selected_sites == "NNC":
             df_selection = df
-        # ------------------------------------------------------------------------------
+        # -------------------------------------------------------------
             with stylable_container(
                     key="title",
                     css_styles="""
@@ -491,17 +491,17 @@ if authenticator_status:
                 st.header("3C .Inc Key Performance Indicators Dashboard") 
                 st.header("🗃️ Data " + str(month_selected) + "/" + str(year_selected)+' 🗃️')  
             st.markdown("---")
-            # ------------------------------------------------------------------------------
+            # ---------------------------------------------------------
             st.subheader("1️⃣ Statistical Index")
             st.markdown("###")
             statistical_index(df_selection)
             st.markdown("---")
-            # ------------------------------------------------------------------------------
+            # ---------------------------------------------------------
             st.subheader("2️⃣ Work LeaderBoards")
             st.markdown("###")
             Works_LeaderBoards(df_selection)
             st.markdown("---")
-            # ------------------------------------------------------------------------------
+            # ---------------------------------------------------------
             st.subheader("3️⃣ Works Histogram")
             st.markdown("###")
             fig_11, fig_12, fig_13 = st.columns(3)
