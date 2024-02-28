@@ -13,6 +13,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
 
+
+#-------------------------------------------------------------------
+#---------------------------FUNCTION--------------------------------
+#-------------------------------------------------------------------
+
+
 #-------------------------------------------------------------------
 def statistical_index(dataframe):
     #-total-
@@ -38,6 +44,7 @@ def statistical_index(dataframe):
             border_left_color='rgb(255,255,255)',
             box_shadow=True,
         )
+
 #-------------------------------------------------------------------
 def works_bar(dataframe,groupby,sortby,value,title,color):
     df_filter = dataframe.groupby(by=[groupby]).sum().sort_values(by=sortby)
@@ -81,6 +88,7 @@ def works_bar(dataframe,groupby,sortby,value,title,color):
         }"""
     ):
         st.plotly_chart(fig_work_bar, use_container_width= True)   
+
 #-------------------------------------------------------------------
 def ranktop3high_index(key,css,dfname,colvalue,unit):
     with stylable_container(
@@ -108,6 +116,7 @@ def ranktop3high_index(key,css,dfname,colvalue,unit):
     #     css_styles=""
     #     ):
     #     st.write(str(dfname.nlargest(n=10, columns=colvalue).index[4]),";", str(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colvalue]), unit)
+
 #-------------------------------------------------------------------
 def ranktop3high_person(key,css,dfname,colvalue,colif1,colif2,unit):
     with stylable_container(
@@ -135,6 +144,7 @@ def ranktop3high_person(key,css,dfname,colvalue,colif1,colif2,unit):
     #     css_styles=""
     #     ):
     #     st.write(str(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colif1]),";",str(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colif2]),";", str(round(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colvalue], 1)), unit)
+
 #-------------------------------------------------------------------
 def ranktop3low_person(key,css,dfname,colvalue,colif1,colif2,unit):
     with stylable_container(
@@ -162,6 +172,7 @@ def ranktop3low_person(key,css,dfname,colvalue,colif1,colif2,unit):
     #     css_styles=""
     #     ):
     #     st.write(str(dfname.nsmallest(n=10, columns=colvalue).iloc[4].at[colif1]),";",str(dfname.nsmallest(n=10, columns=colvalue).iloc[4].at[colif2]),";", str(round(dfname.nsmallest(n=10, columns=colvalue).iloc[4].at[colvalue], 1)), unit)
+
 #-------------------------------------------------------------------
 def Works_LeaderBoards(dataframe):
     ranking_1, ranking_2, ranking_3, ranking_4, ranking_5 = st.columns(5)
@@ -258,6 +269,7 @@ def Works_LeaderBoards(dataframe):
                 'Name',
                 '',
             )
+
 #-------------------------------------------------------------------
 def fig_coef_his(dataframe):
     #-config-
@@ -285,6 +297,7 @@ def fig_coef_his(dataframe):
         css_styles=""
     ):
         st.plotly_chart(fig_coef_his, use_container_width= True)
+
 #-------------------------------------------------------------------
 def fig_kpifinal_his(dataframe):
     #-config-
@@ -312,6 +325,7 @@ def fig_kpifinal_his(dataframe):
         css_styles=""
     ):
         st.plotly_chart(fig_kpifinal_his, use_container_width= True)
+
 #-------------------------------------------------------------------
 def KPI_Leaderboards(dataframe):
     rankkpi_1, rankkpi_2, rankkpi_3, rankkpi_4, rankkpi_5 = st.columns(5)
@@ -413,6 +427,7 @@ def KPI_Leaderboards(dataframe):
                 'Name',
                 '',
             )
+
 #-------------------------------------------------------------------
 def highlight_columns(col):
     color = 'rgba(255,127,14,0.7)' if col.name in ['Kpi Final', 'Coefficient'] else 'rgba(11,58,117,0.7)' 
@@ -421,24 +436,30 @@ def highlight_columns(col):
 
 
 
-
-
-
-
-
-
-
-
-
 #-------------------------------------------------------------------
+#----------------------PAGE ENVIRONMENT-----------------------------
+#-------------------------------------------------------------------
+
+
+#----PAGE_CONFIG----
+
+
 st.set_page_config(page_title="KPI Dashboard WebApp",
                    page_icon=":bar_chart:",
                    layout="wide"
 )
-#----USER AUTHENTICATION
+
+
+#----USER_AUTHENTICATION----
+
+
 names = ["Admin"]
 usernames = ["Admin"]
-#----Load hashed passwords
+
+
+#----LOAD_HASHEDPASSWORD----
+
+
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
@@ -448,12 +469,15 @@ current_month = datetime.now().month
 current_year = datetime.now().year
 month_selected = 0
 year_selected = 0
+
+
+#----CHECK_AUTHENTICATOR----
+
+
 if authenticator_status == False:
     st.error("Username/password is incorrect")
-
 if authenticator_status == None:
     st.warning("Please enter your username and password")
-
 if authenticator_status == True:
     with st.sidebar:
         authenticator.logout("Logout","sidebar")
@@ -478,7 +502,7 @@ if authenticator_status == True:
             default_month = current_month - 2
             default_year = current_year
         month_selected = st.sidebar.selectbox(
-            "Month?", 
+            "Month?",
             ['1','2','3','4','5','6','7','8','9','10','11','12'],
             default_month,
             ) 
@@ -487,18 +511,26 @@ if authenticator_status == True:
             list(range(default_year-5,default_year+5)),
             5
         ) 
-#----MAINPAGE----    
+
+     
+#----MAIN_PAGE----   
+
+
     excel_name = './data/' + str(year_selected) + '-' + str(month_selected) +'.xlsx'
     checkfile = os.path.isfile(excel_name)
     if checkfile == True:
         df = pd.read_excel(io=excel_name, 
-                    engine='openpyxl', 
-                    sheet_name='Data',  
+                    engine='openpyxl',
+                    sheet_name='Data',
                     skiprows=3,
                     usecols='B:Q',
                     nrows=1000,
         )
-    #----NNCPage
+
+
+#----NNC_PAGE----
+        
+
         if selected_sites == "NNC":
             df_selection = df
             with stylable_container(
@@ -555,7 +587,10 @@ if authenticator_status == True:
             styled_df = df_selection.style.apply(highlight_columns)
             st.dataframe(styled_df,width=1800)
 
-    #----DepartmentPage
+
+#----DEPARTMENT_PAGE----
+            
+
         if selected_sites == "Department" :
             department = st.sidebar.multiselect(
                 "Select Department",
@@ -622,7 +657,10 @@ if authenticator_status == True:
             else:
                 st.write("Please Select Department!")
 
-    #----PersonPage
+
+#----PERSON_PAGE----
+                
+
         if selected_sites == "Person" :
             department = st.sidebar.multiselect(
                 "Select Department",
