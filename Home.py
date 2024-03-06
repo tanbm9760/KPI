@@ -13,11 +13,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
 
-
 #-------------------------------------------------------------------
 #---------------------------FUNCTION--------------------------------
-#-------------------------------------------------------------------
-
+#------------------------------------------------------------------- 
 
 #-------------------------------------------------------------------
 def statistical_index(dataframe):
@@ -46,7 +44,7 @@ def statistical_index(dataframe):
         )
 
 #-------------------------------------------------------------------
-def works_bar(dataframe,groupby,sortby,value,title,color):
+def works_bar_sum(dataframe,groupby,sortby,value,title,color):
     df_filter = dataframe.groupby(by=[groupby]).sum().sort_values(by=sortby)
     #-title-
     st.write(title)
@@ -87,7 +85,51 @@ def works_bar(dataframe,groupby,sortby,value,title,color):
             background-color: rgba(38,151,215,0.4);
         }"""
     ):
-        st.plotly_chart(fig_work_bar, use_container_width= True)   
+        st.plotly_chart(fig_work_bar, use_container_width= True) 
+
+#-------------------------------------------------------------------
+def works_bar_mean(dataframe,groupby,sortby,value,title,color):
+    df_filter = dataframe.groupby(by=[groupby])[value].mean()
+    #-title-
+    st.write(title)
+    #-config-
+    fig_work_bar = px.bar(
+        df_filter,
+        y=value,
+        x=df_filter.index,
+        height=320,
+        text_auto='.1f',
+        )
+    fig_work_bar.update_traces(
+        textposition = 'auto', 
+        textfont_size=10,
+        marker_color=color,
+        )
+    fig_work_bar.update_layout(
+        {'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)',}
+        )
+    fig_work_bar.update_layout(
+        margin=dict(t=20, r=40, b=0, l=40), 
+        showlegend = False, 
+        xaxis_title=None,
+        yaxis_title=None,
+        xaxis_tickangle=90,
+        )
+    fig_work_bar.update_yaxes(
+        rangemode="tozero"
+        )
+    #-display-
+    with stylable_container(
+        key="chart",
+        css_styles="""
+        {   
+            border-radius: 0.5em;
+            border: 2px groove white;
+            box-shadow: rgba(255, 255, 255, 0.5) 0px 2px 4px 0px, rgba(38,151,215,0.4) 0px 2px 12px 0px;
+            background-color: rgba(38,151,215,0.4);
+        }"""
+    ):
+        st.plotly_chart(fig_work_bar, use_container_width= True) 
 
 #-------------------------------------------------------------------
 def ranktop3high_index(key,css,dfname,colvalue,unit):
@@ -275,19 +317,27 @@ def fig_coef_his(dataframe):
     #-config-
     fig_coef_his = px.histogram(
         dataframe,
-        x="Coefficient", 
-        color='Department',
-        height= 350, 
+        x="Coefficient",
+        range_x=(0,2),
+        # color='Department',
+        height= 400, 
         text_auto='.0f',
-        color_discrete_sequence=px.colors.qualitative.D3,  
+        # color_discrete_sequence=px.colors.qualitative.D3,  
         )
     fig_coef_his.update_layout(                   
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)'}
     )
-    fig_coef_his.update_layout(bargap=0.1,xaxis_title='KPI Coefficient', yaxis_title='Total')
+    fig_coef_his.update_layout(
+        bargap=0.1,
+        xaxis_title='KPI Coefficient',
+        xaxis_tickangle=0,
+        yaxis_title=None,
+        margin=dict(t=20, r=40, b=0, l=40), 
+        showlegend = False, 
+        )
     fig_coef_his.update_xaxes(dtick=0.1)
     fig_coef_his.update_traces(
-        hoverinfo='x+y', textposition = 'inside', textfont_size=10, textangle = 0,
+        hoverinfo='x+y', textposition = 'outside', textfont_size=10, textangle = 0, xbins=dict(start=0.05,end=2.5,size=0.1)
     ) 
     #-title-
     st.write("KPI Coefficient")
@@ -304,18 +354,24 @@ def fig_kpifinal_his(dataframe):
     fig_kpifinal_his = px.histogram(
         dataframe, 
         x="Kpi Final",
-        color='Department',
-        color_discrete_sequence=px.colors.qualitative.Light24, 
-        height= 350, 
+        # color='Department',
+        # color_discrete_sequence=px.colors.qualitative.Light24, 
+        height= 400, 
         text_auto='.0f',
         )
     fig_kpifinal_his.update_layout(                   
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)'}
     )
-    fig_kpifinal_his.update_layout(bargap=0.1,xaxis_title='KPI Final Score', yaxis_title='Total')
-    fig_kpifinal_his.update_xaxes(dtick=5)
+    fig_kpifinal_his.update_layout(
+        bargap=0.1,
+        xaxis_title='KPI Final Score',
+        xaxis_tickangle=0,
+        yaxis_title=None,
+        margin=dict(t=20, r=40, b=0, l=40), 
+        showlegend = False,)
+    fig_kpifinal_his.update_xaxes(dtick=2)
     fig_kpifinal_his.update_traces(
-        hoverinfo='x+y', textposition = 'inside', textfont_size=10, textangle = 0,
+        hoverinfo='x+y', textposition = 'outside', textfont_size=10, textangle = 0,
     )
     #-title-
     st.write("KPI Final Score")
@@ -556,16 +612,21 @@ if authenticator_status == True:
             #---------------------------------------------------------
             st.subheader("3️⃣ Works Histogram")
             st.markdown("###")
-            fig_11, fig_12, fig_13 = st.columns(3)
+            fig_11, fig_12 = st.columns(2)
             with fig_11:
-                works_bar(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
-                works_bar(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
+                works_bar_sum(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
+                works_bar_sum(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
+                works_bar_sum(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
+                works_bar_sum(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
+                works_bar_sum(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
+                works_bar_sum(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
             with fig_12:
-                works_bar(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
-                works_bar(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
-            with fig_13:
-                works_bar(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
-                works_bar(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
+                works_bar_mean(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
+                works_bar_mean(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
+                works_bar_mean(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
+                works_bar_mean(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
+                works_bar_mean(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
+                works_bar_mean(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")          
             st.markdown("---")
             #---------------------------------------------------------
             st.subheader("4️⃣ KPI LeaderBoards")
@@ -575,11 +636,8 @@ if authenticator_status == True:
             #---------------------------------------------------------
             st.subheader("5️⃣ KPI Histogram")
             st.markdown("###")
-            fig_21, fig_22 = st.columns(2)
-            with fig_21:
-                fig_kpifinal_his(df_selection)
-            with fig_22:
-                fig_coef_his(df_selection)
+            fig_kpifinal_his(df_selection)
+            fig_coef_his(df_selection)
             st.markdown("---")
             #---------------------------------------------------------
             st.subheader("6️⃣ Data Frame")
@@ -595,7 +653,7 @@ if authenticator_status == True:
             department = st.sidebar.multiselect(
                 "Select Department",
                 options=df["Department"].unique(),
-                max_selections=1,
+                max_selections=3,
             )
             df_selection = df.query(
                 "Department == @department"
@@ -625,16 +683,21 @@ if authenticator_status == True:
                 #------------------------------------------------------------------------------
                 st.subheader("3️⃣ Works Histogram")
                 st.markdown("###")
-                fig_11, fig_12, fig_13 = st.columns(3)
+                fig_11, fig_12 = st.columns(2)
                 with fig_11:
-                    works_bar(df_selection, "Name", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
-                    works_bar(df_selection, "Name", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
+                    works_bar_sum(df_selection, "Name", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
+                    works_bar_sum(df_selection, "Name", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
+                    works_bar_sum(df_selection, "Name", "Department", "Important", "Important Works", "rgb(255,127,14)")
+                    works_bar_sum(df_selection, "Name", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
+                    works_bar_sum(df_selection, "Name", "Department", "Late", "Late Works", "rgb(214,39,40)")
+                    works_bar_sum(df_selection, "Name", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
                 with fig_12:
-                    works_bar(df_selection, "Name", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
-                    works_bar(df_selection, "Name", "Department", "Late", "Late Works", "rgb(214,39,40)")
-                with fig_13:
-                    works_bar(df_selection, "Name", "Department", "Important", "Important Works", "rgb(255,127,14)")
-                    works_bar(df_selection, "Name", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
+                    works_bar_mean(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
+                    works_bar_mean(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
+                    works_bar_mean(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
+                    works_bar_mean(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
+                    works_bar_mean(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
+                    works_bar_mean(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")   
                 st.markdown("---")
                 st.subheader("4️⃣ KPI LeaderBoards")
                 st.markdown("###")
@@ -643,11 +706,8 @@ if authenticator_status == True:
                 #---------------------------------------------------------
                 st.subheader("5️⃣ KPI Histogram")
                 st.markdown("###")
-                fig_21, fig_22 = st.columns(2)
-                with fig_21:
-                    fig_kpifinal_his(df_selection)
-                with fig_22:
-                    fig_coef_his(df_selection)
+                fig_kpifinal_his(df_selection)
+                fig_coef_his(df_selection)
                 st.markdown("---")
                 #---------------------------------------------------------
                 st.subheader("6️⃣ Data Frame")
@@ -673,7 +733,7 @@ if authenticator_status == True:
             name = st.sidebar.multiselect(
                 "Select Person",
                 options = df_buffer["Name"].unique(),
-                max_selections=1,
+                max_selections=3,
             )
             df_selection = df_buffer.query(
                 "Name == @name",
