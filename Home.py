@@ -32,7 +32,7 @@ def statistical_index(dataframe):
     metric_2.metric("Urgent Works",f"{total_works_urgent:,}")
     metric_3.metric("Important Works",f"{total_works_important:,}")
     metric_4.metric("Completed Works",f"{total_works_completed:,}")
-    metric_5.metric("Late Works",f"{total_works_late:,}")
+    metric_5.metric("Completed Late Works",f"{total_works_late:,}")
     metric_6.metric("Out of date Works",f"{total_works_outofdate:,}") 
     style_metric_cards(
             background_color='rgba(38,151,215,0.4)',
@@ -282,7 +282,7 @@ def Works_LeaderBoards(dataframe):
             key="rank",
             css_styles=""
         ):
-            st.write("Late")
+            st.write("Completed Late")
             ranktop3high_person(
                 "r_t4",
                 """{border-radius: 0.5em;                    
@@ -318,7 +318,6 @@ def fig_coef_his(dataframe):
     fig_coef_his = px.histogram(
         dataframe,
         x="Coefficient",
-        range_x=(0,2),
         # color='Department',
         height= 400, 
         text_auto='.0f',
@@ -369,11 +368,11 @@ def fig_kpifinal_his(dataframe):
         yaxis_title=None,
         margin=dict(t=20, r=40, b=0, l=40), 
         showlegend = False,)
-    fig_kpifinal_his.update_xaxes(dtick=2)
+    fig_kpifinal_his.update_xaxes(dtick=5)
     fig_kpifinal_his.update_traces(
         hoverinfo='x+y', textposition = 'outside', textfont_size=10, textangle = 0,
     )
-    #-title-
+    #-title- 
     st.write("KPI Final Score")
     #-display-
     with stylable_container(
@@ -618,15 +617,15 @@ if authenticator_status == True:
                 works_bar_sum(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
                 works_bar_sum(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
                 works_bar_sum(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
-                works_bar_sum(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
+                works_bar_sum(df_selection, "Department", "Department", "Late", "Completed Late Works", "rgb(214,39,40)")
                 works_bar_sum(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
             with fig_12:
-                works_bar_mean(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
-                works_bar_mean(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
-                works_bar_mean(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
-                works_bar_mean(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
-                works_bar_mean(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
-                works_bar_mean(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")          
+                works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)")
+                works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)")
+                works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)")
+                works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)")
+                works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)")
+                works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)")          
             st.markdown("---")
             #---------------------------------------------------------
             st.subheader("4️⃣ KPI LeaderBoards")
@@ -636,8 +635,11 @@ if authenticator_status == True:
             #---------------------------------------------------------
             st.subheader("5️⃣ KPI Histogram")
             st.markdown("###")
-            fig_kpifinal_his(df_selection)
-            fig_coef_his(df_selection)
+            fig_21, fig_22 = st.columns(2)
+            with fig_21:
+                fig_kpifinal_his(df_selection)
+            with fig_22:
+                fig_coef_his(df_selection)
             st.markdown("---")
             #---------------------------------------------------------
             st.subheader("6️⃣ Data Frame")
@@ -683,21 +685,21 @@ if authenticator_status == True:
                 #------------------------------------------------------------------------------
                 st.subheader("3️⃣ Works Histogram")
                 st.markdown("###")
-                fig_11, fig_12 = st.columns(2)
+                fig_11, fig_12 = st.columns([2,1])
                 with fig_11:
                     works_bar_sum(df_selection, "Name", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
                     works_bar_sum(df_selection, "Name", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
                     works_bar_sum(df_selection, "Name", "Department", "Important", "Important Works", "rgb(255,127,14)")
                     works_bar_sum(df_selection, "Name", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
-                    works_bar_sum(df_selection, "Name", "Department", "Late", "Late Works", "rgb(214,39,40)")
+                    works_bar_sum(df_selection, "Name", "Department", "Late", "Completed Late Works", "rgb(214,39,40)")
                     works_bar_sum(df_selection, "Name", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
                 with fig_12:
-                    works_bar_mean(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
-                    works_bar_mean(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
-                    works_bar_mean(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
-                    works_bar_mean(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
-                    works_bar_mean(df_selection, "Department", "Department", "Late", "Late Works", "rgb(214,39,40)")
-                    works_bar_mean(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")   
+                    works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)")
+                    works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)")
+                    works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)")
+                    works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)")
+                    works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)")
+                    works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)")   
                 st.markdown("---")
                 st.subheader("4️⃣ KPI LeaderBoards")
                 st.markdown("###")
@@ -706,8 +708,11 @@ if authenticator_status == True:
                 #---------------------------------------------------------
                 st.subheader("5️⃣ KPI Histogram")
                 st.markdown("###")
-                fig_kpifinal_his(df_selection)
-                fig_coef_his(df_selection)
+                fig_21, fig_22 = st.columns(2)
+                with fig_21:
+                    fig_kpifinal_his(df_selection)
+                with fig_22:
+                    fig_coef_his(df_selection)
                 st.markdown("---")
                 #---------------------------------------------------------
                 st.subheader("6️⃣ Data Frame")
