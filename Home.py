@@ -44,7 +44,7 @@ def statistical_index(dataframe):
         )
 
 #-------------------------------------------------------------------
-def works_bar_sum(dataframe,groupby,sortby,value,title,color):
+def works_bar_sum(dataframe,groupby,sortby,value,title,color,barwidth):
     df_filter = dataframe.groupby(by=[groupby]).sum().sort_values(by=sortby)
     #-title-
     st.write(title)
@@ -60,6 +60,7 @@ def works_bar_sum(dataframe,groupby,sortby,value,title,color):
         textposition = 'auto', 
         textfont_size=10,
         marker_color=color,
+        width = barwidth,
         )
     fig_work_bar.update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)',}
@@ -88,7 +89,7 @@ def works_bar_sum(dataframe,groupby,sortby,value,title,color):
         st.plotly_chart(fig_work_bar, use_container_width= True) 
 
 #-------------------------------------------------------------------
-def works_bar_mean(dataframe,groupby,sortby,value,title,color):
+def works_bar_mean(dataframe,groupby,sortby,value,title,color,barwidth):
     df_filter = dataframe.groupby(by=[groupby])[value].mean()
     #-title-
     st.write(title)
@@ -101,9 +102,10 @@ def works_bar_mean(dataframe,groupby,sortby,value,title,color):
         text_auto='.1f',
         )
     fig_work_bar.update_traces(
-        textposition = 'auto', 
+        textposition ='auto', 
         textfont_size=10,
         marker_color=color,
+        width = barwidth,
         )
     fig_work_bar.update_layout(
         {'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)',}
@@ -613,19 +615,19 @@ if authenticator_status == True:
             st.markdown("###")
             fig_11, fig_12 = st.columns(2)
             with fig_11:
-                works_bar_sum(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
-                works_bar_sum(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
-                works_bar_sum(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)")
-                works_bar_sum(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
-                works_bar_sum(df_selection, "Department", "Department", "Late", "Completed Late Works", "rgb(214,39,40)")
-                works_bar_sum(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
+                works_bar_sum(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)",0.8)
+                works_bar_sum(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)",0.8)
+                works_bar_sum(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)",0.8)
+                works_bar_sum(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)",0.8)
+                works_bar_sum(df_selection, "Department", "Department", "Late", "Completed Late Works", "rgb(214,39,40)",0.8)
+                works_bar_sum(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)",0.8)
             with fig_12:
-                works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)")
-                works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)")
-                works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)")
-                works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)")
-                works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)")
-                works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)")          
+                works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)",0.8)
+                works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)",0.8)
+                works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)",0.8)
+                works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)",0.8)
+                works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)",0.8)
+                works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)",0.8)          
             st.markdown("---")
             #---------------------------------------------------------
             st.subheader("4️⃣ KPI LeaderBoards")
@@ -687,19 +689,19 @@ if authenticator_status == True:
                 st.markdown("###")
                 fig_11, fig_12 = st.columns([2,1])
                 with fig_11:
-                    works_bar_sum(df_selection, "Name", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)")
-                    works_bar_sum(df_selection, "Name", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)")
-                    works_bar_sum(df_selection, "Name", "Department", "Important", "Important Works", "rgb(255,127,14)")
-                    works_bar_sum(df_selection, "Name", "Department", "Completed", "Completed Works", "rgb(44,160,44)")
-                    works_bar_sum(df_selection, "Name", "Department", "Late", "Completed Late Works", "rgb(214,39,40)")
-                    works_bar_sum(df_selection, "Name", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)")
+                    works_bar_sum(df_selection, "Name", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)",0.8)
+                    works_bar_sum(df_selection, "Name", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)",0.8)
+                    works_bar_sum(df_selection, "Name", "Department", "Important", "Important Works", "rgb(255,127,14)",0.8)
+                    works_bar_sum(df_selection, "Name", "Department", "Completed", "Completed Works", "rgb(44,160,44)",0.8)
+                    works_bar_sum(df_selection, "Name", "Department", "Late", "Completed Late Works", "rgb(214,39,40)",0.8)
+                    works_bar_sum(df_selection, "Name", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)",0.8)
                 with fig_12:
-                    works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)")
-                    works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)")
-                    works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)")
-                    works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)")
-                    works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)")
-                    works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)")   
+                    works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)",0.4)
+                    works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)",0.4)
+                    works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)",0.4)
+                    works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)",0.4)
+                    works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)",0.4)
+                    works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)",0.4)   
                 st.markdown("---")
                 st.subheader("4️⃣ KPI LeaderBoards")
                 st.markdown("###")
