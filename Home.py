@@ -563,8 +563,8 @@ if authenticator_status == True:
             ) 
         year_selected = st.sidebar.selectbox(
             "Year? ",
-            list(range(default_year-5,default_year+5)),
-            5
+            list(range(default_year-2,default_year+2)),
+            2
         ) 
 
      
@@ -596,7 +596,7 @@ if authenticator_status == True:
                     }"""
                 ):
                 st.header("3C .Inc Key Performance Indicators Dashboard") 
-                st.header("🗃️ Data " + str(month_selected) + "/" + str(year_selected)+' 🗃️')  
+                st.header("Data " + str(month_selected) + "/" + str(year_selected))  
             st.markdown("---")
             #---------------------------------------------------------
             st.subheader("1️⃣ Statistical Index")
@@ -669,7 +669,7 @@ if authenticator_status == True:
                     }"""
                 ):
                 st.header("3C .Inc Key Performance Indicators Dashboard") 
-                st.header("🗃️ Data " + str(month_selected) + "/" + str(year_selected)+' 🗃️') 
+                st.header("Data "+ str(month_selected) + "/" + str(year_selected)) 
             st.markdown("---")
             #------------------------------------------------------------------------------
             if department:
