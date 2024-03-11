@@ -15,8 +15,11 @@ from PIL import Image
 
 #-------------------------------------------------------------------
 #---------------------------FUNCTION--------------------------------
-#------------------------------------------------------------------- 
-
+#-------------------------------------------------------------------
+def save_value(key):
+    st.session_state[key] = st.session_state["_"+key]
+def get_value(key):
+    st.session_state["_"+key] = st.session_state[key] 
 #-------------------------------------------------------------------
 def statistical_index(dataframe):
     #-total-
@@ -42,7 +45,6 @@ def statistical_index(dataframe):
             border_left_color='rgb(255,255,255)',
             box_shadow=True,
         )
-
 #-------------------------------------------------------------------
 def works_bar_sum(dataframe,groupby,sortby,value,title,color,barwidth):
     df_filter = dataframe.groupby(by=[groupby]).sum().sort_values(by=sortby)
@@ -87,7 +89,6 @@ def works_bar_sum(dataframe,groupby,sortby,value,title,color,barwidth):
         }"""
     ):
         st.plotly_chart(fig_work_bar, use_container_width= True) 
-
 #-------------------------------------------------------------------
 def works_bar_mean(dataframe,groupby,sortby,value,title,color,barwidth):
     df_filter = dataframe.groupby(by=[groupby])[value].mean()
@@ -132,7 +133,6 @@ def works_bar_mean(dataframe,groupby,sortby,value,title,color,barwidth):
         }"""
     ):
         st.plotly_chart(fig_work_bar, use_container_width= True) 
-
 #-------------------------------------------------------------------
 def ranktop3high_index(key,css,dfname,colvalue,unit):
     with stylable_container(
@@ -160,7 +160,6 @@ def ranktop3high_index(key,css,dfname,colvalue,unit):
     #     css_styles=""
     #     ):
     #     st.write(str(dfname.nlargest(n=10, columns=colvalue).index[4]),";", str(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colvalue]), unit)
-
 #-------------------------------------------------------------------
 def ranktop3high_person(key,css,dfname,colvalue,colif1,colif2,unit):
     with stylable_container(
@@ -188,7 +187,6 @@ def ranktop3high_person(key,css,dfname,colvalue,colif1,colif2,unit):
     #     css_styles=""
     #     ):
     #     st.write(str(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colif1]),";",str(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colif2]),";", str(round(dfname.nlargest(n=10, columns=colvalue).iloc[4].at[colvalue], 1)), unit)
-
 #-------------------------------------------------------------------
 def ranktop3low_person(key,css,dfname,colvalue,colif1,colif2,unit):
     with stylable_container(
@@ -216,7 +214,6 @@ def ranktop3low_person(key,css,dfname,colvalue,colif1,colif2,unit):
     #     css_styles=""
     #     ):
     #     st.write(str(dfname.nsmallest(n=10, columns=colvalue).iloc[4].at[colif1]),";",str(dfname.nsmallest(n=10, columns=colvalue).iloc[4].at[colif2]),";", str(round(dfname.nsmallest(n=10, columns=colvalue).iloc[4].at[colvalue], 1)), unit)
-
 #-------------------------------------------------------------------
 def Works_LeaderBoards(dataframe):
     ranking_1, ranking_2, ranking_3, ranking_4, ranking_5 = st.columns(5)
@@ -313,7 +310,6 @@ def Works_LeaderBoards(dataframe):
                 'Name',
                 '',
             )
-
 #-------------------------------------------------------------------
 def fig_coef_his(dataframe):
     #-config-
@@ -348,7 +344,6 @@ def fig_coef_his(dataframe):
         css_styles=""
     ):
         st.plotly_chart(fig_coef_his, use_container_width= True)
-
 #-------------------------------------------------------------------
 def fig_kpifinal_his(dataframe):
     #-config-
@@ -382,7 +377,6 @@ def fig_kpifinal_his(dataframe):
         css_styles=""
     ):
         st.plotly_chart(fig_kpifinal_his, use_container_width= True)
-
 #-------------------------------------------------------------------
 def KPI_Leaderboards(dataframe):
     rankkpi_1, rankkpi_2, rankkpi_3, rankkpi_4, rankkpi_5 = st.columns(5)
@@ -484,39 +478,22 @@ def KPI_Leaderboards(dataframe):
                 'Name',
                 '',
             )
-
 #-------------------------------------------------------------------
 def highlight_columns(col):
     color = 'rgba(255,127,14,0.7)' if col.name in ['Kpi Final', 'Coefficient'] else 'rgba(11,58,117,0.7)' 
     return ['background-color: {}'.format(color) for _ in col]
-
-
-
-
 #-------------------------------------------------------------------
 #----------------------PAGE ENVIRONMENT-----------------------------
 #-------------------------------------------------------------------
-
-
 #----PAGE_CONFIG----
-
-
 st.set_page_config(page_title="KPI Dashboard WebApp",
                    page_icon=":bar_chart:",
                    layout="wide"
 )
-
-
 #----USER_AUTHENTICATION----
-
-
 names = ["Admin"]
 usernames = ["Admin"]
-
-
 #----LOAD_HASHEDPASSWORD----
-
-
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
@@ -526,242 +503,50 @@ current_month = datetime.now().month
 current_year = datetime.now().year
 month_selected = 0
 year_selected = 0
-
-
 #----CHECK_AUTHENTICATOR----
-
-
 if authenticator_status == False:
     st.error("Username/password is incorrect")
 if authenticator_status == None:
     st.warning("Please enter your username and password")
 if authenticator_status == True:
-    with st.sidebar:
-        authenticator.logout("Logout","sidebar")
-        st.title(f"Welcome {name}")
-        selected_sites = option_menu(None, ["NNC", "Department",  "Person"],
-            icons=['house', 'journal-bookmark', 'person'],
-            menu_icon="cast",
-            default_index=0,
-            orientation="vertical",
-            styles={
-                "container": {"padding": "0!important", "background-color": "#0b3a75", "min-width": "100%"},
-                "icon": {"color": "orange", "font-size": "15px"},
-                "nav-link": {"font-size": "15px", "text-align": "left", "margin":"0px", "--hover-color": "#165f9c"},
-                "nav-link-selected": {"background-color": "#165f9c"},
-            }
-        )
-
-        if(current_month == 1):
-            default_month = 11
-            default_year = current_year - 1
-        else:
-            default_month = current_month - 2
-            default_year = current_year
-        month_selected = st.sidebar.selectbox(
-            "Month?",
-            ['1','2','3','4','5','6','7','8','9','10','11','12'],
-            default_month,
-            ) 
-        year_selected = st.sidebar.selectbox(
-            "Year? ",
-            list(range(default_year-2,default_year+2)),
-            2
-        ) 
-
-     
-#----MAIN_PAGE----   
-
-
-    excel_name = './data/' + str(year_selected) + '-' + str(month_selected) +'.xlsx'
+    st.title(f"Welcome {name} !")
+    st.write("This is a KPI analysis website, helping managers track, analyze and evaluate data collected from employee work results.")
+    if(current_month == 1):
+        default_month = 11
+        default_year = current_year - 1
+    else:
+        default_month = current_month - 2
+        default_year = current_year
+    if "select_month" not in st.session_state:
+        st.session_state["select_month"] = default_month
+    get_value("select_month")
+    selected_month = st.sidebar.selectbox(
+        "Select Month",
+        [1,2,3,4,5,6,7,8,9,10,11,12],
+        key= "_select_month",
+        on_change=save_value,
+        args=["select_month"]
+    )
+    save_value("select_month")
+    if "select_year" not in st.session_state:
+        st.session_state["select_year"] = default_year
+    get_value("select_year")
+    selected_year = st.sidebar.selectbox(
+        "Select Year",
+        list(range(default_year-2,default_year+2)),
+        key= "_select_year",
+        on_change=save_value,
+        args=["select_year"]
+    ) 
+    save_value("select_year")
+    excel_name = './data/' + str(selected_year) + '-' + str(selected_month) +'.xlsx'
     checkfile = os.path.isfile(excel_name)
     if checkfile == True:
         df = pd.read_excel(io=excel_name, 
-                    engine='openpyxl',
-                    sheet_name='Data',
-                    skiprows=3,
-                    usecols='B:Q',
-                    nrows=1000,
-        )
-
-
-#----NNC_PAGE----
-        
-
-        if selected_sites == "NNC":
-            df_selection = df
-            with stylable_container(
-                    key="title",
-                    css_styles="""
-                    {   
-                        text-align: center;
-                    }"""
-                ):
-                st.header("3C .Inc Key Performance Indicators Dashboard") 
-                st.header("Data " + str(month_selected) + "/" + str(year_selected))  
-            st.markdown("---")
-            #---------------------------------------------------------
-            st.subheader("1️⃣ Statistical Index")
-            st.markdown("###")
-            statistical_index(df_selection)
-            st.markdown("---")
-            #---------------------------------------------------------
-            st.subheader("2️⃣ Work LeaderBoards")
-            st.markdown("###")
-            Works_LeaderBoards(df_selection)
-            st.markdown("---")
-            #---------------------------------------------------------
-            st.subheader("3️⃣ Works Histogram")
-            st.markdown("###")
-            fig_11, fig_12 = st.columns(2)
-            with fig_11:
-                works_bar_sum(df_selection, "Department", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)",0.8)
-                works_bar_sum(df_selection, "Department", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)",0.8)
-                works_bar_sum(df_selection, "Department", "Department", "Important", "Important Works", "rgb(255,127,14)",0.8)
-                works_bar_sum(df_selection, "Department", "Department", "Completed", "Completed Works", "rgb(44,160,44)",0.8)
-                works_bar_sum(df_selection, "Department", "Department", "Late", "Completed Late Works", "rgb(214,39,40)",0.8)
-                works_bar_sum(df_selection, "Department", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)",0.8)
-            with fig_12:
-                works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)",0.8)
-                works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)",0.8)
-                works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)",0.8)
-                works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)",0.8)
-                works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)",0.8)
-                works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)",0.8)          
-            st.markdown("---")
-            #---------------------------------------------------------
-            st.subheader("4️⃣ KPI LeaderBoards")
-            st.markdown("###")
-            KPI_Leaderboards(df_selection)
-            st.markdown("---")
-            #---------------------------------------------------------
-            st.subheader("5️⃣ KPI Histogram")
-            st.markdown("###")
-            fig_21, fig_22 = st.columns(2)
-            with fig_21:
-                fig_kpifinal_his(df_selection)
-            with fig_22:
-                fig_coef_his(df_selection)
-            st.markdown("---")
-            #---------------------------------------------------------
-            st.subheader("6️⃣ Data Frame")
-            st.markdown("###")
-            styled_df = df_selection.style.apply(highlight_columns)
-            st.dataframe(styled_df,width=1800)
-
-
-#----DEPARTMENT_PAGE----
-            
-
-        if selected_sites == "Department" :
-            department = st.sidebar.multiselect(
-                "Select Department",
-                options=df["Department"].unique(),
-                max_selections=3,
-            )
-            df_selection = df.query(
-                "Department == @department"
-            )
-            #---------------------------------------------------------
-            with stylable_container(
-                    key="title",
-                    css_styles="""
-                    {   
-                        text-align: center;
-                    }"""
-                ):
-                st.header("3C .Inc Key Performance Indicators Dashboard") 
-                st.header("Data "+ str(month_selected) + "/" + str(year_selected)) 
-            st.markdown("---")
-            #------------------------------------------------------------------------------
-            if department:
-                st.subheader("1️⃣ Statistical Index")
-                st.markdown("###")
-                statistical_index(df_selection)
-                st.markdown("---")
-                #------------------------------------------------------------------------------
-                st.subheader("2️⃣ Work LeaderBoards")
-                st.markdown("###")
-                Works_LeaderBoards(df_selection)
-                st.markdown("---")
-                #------------------------------------------------------------------------------
-                st.subheader("3️⃣ Works Histogram")
-                st.markdown("###")
-                fig_11, fig_12 = st.columns([2,1])
-                with fig_11:
-                    works_bar_sum(df_selection, "Name", "Department", "Assigned", "Assigned Works", "rgb(220,220,220)",0.8)
-                    works_bar_sum(df_selection, "Name", "Department", "Urgent", "Urgent Works", "rgb(38,151,215)",0.8)
-                    works_bar_sum(df_selection, "Name", "Department", "Important", "Important Works", "rgb(255,127,14)",0.8)
-                    works_bar_sum(df_selection, "Name", "Department", "Completed", "Completed Works", "rgb(44,160,44)",0.8)
-                    works_bar_sum(df_selection, "Name", "Department", "Late", "Completed Late Works", "rgb(214,39,40)",0.8)
-                    works_bar_sum(df_selection, "Name", "Department", "Out of date", "Out of date Works", "rgb(148,103,189)",0.8)
-                with fig_12:
-                    works_bar_mean(df_selection, "Department", "Department", "Assigned", "Average Assigned Works", "rgb(220,220,220)",0.4)
-                    works_bar_mean(df_selection, "Department", "Department", "Urgent", "Average Urgent Works", "rgb(38,151,215)",0.4)
-                    works_bar_mean(df_selection, "Department", "Department", "Important", "Average Important Works", "rgb(255,127,14)",0.4)
-                    works_bar_mean(df_selection, "Department", "Department", "Completed", "Average Completed Works", "rgb(44,160,44)",0.4)
-                    works_bar_mean(df_selection, "Department", "Department", "Late", "Average Completed Late Works", "rgb(214,39,40)",0.4)
-                    works_bar_mean(df_selection, "Department", "Department", "Out of date", "Average Out of date Works", "rgb(148,103,189)",0.4)   
-                st.markdown("---")
-                st.subheader("4️⃣ KPI LeaderBoards")
-                st.markdown("###")
-                KPI_Leaderboards(df_selection)
-                st.markdown("---")
-                #---------------------------------------------------------
-                st.subheader("5️⃣ KPI Histogram")
-                st.markdown("###")
-                fig_21, fig_22 = st.columns(2)
-                with fig_21:
-                    fig_kpifinal_his(df_selection)
-                with fig_22:
-                    fig_coef_his(df_selection)
-                st.markdown("---")
-                #---------------------------------------------------------
-                st.subheader("6️⃣ Data Frame")
-                st.markdown("###")
-                styled_df = df_selection.style.apply(highlight_columns)
-                st.dataframe(styled_df,width=1800)
-            else:
-                st.write("Please Select Department!")
-
-
-#----PERSON_PAGE----
-                
-
-        if selected_sites == "Person" :
-            department = st.sidebar.multiselect(
-                "Select Department",
-                options=df["Department"].unique(),
-                max_selections=1,
-            )
-            df_buffer = df.query(
-                "Department == @department",
-                )
-            name = st.sidebar.multiselect(
-                "Select Person",
-                options = df_buffer["Name"].unique(),
-                max_selections=3,
-            )
-            df_selection = df_buffer.query(
-                "Name == @name",
-                )
-        #-----------------------------------------------------------------------------------
-            with stylable_container(
-                    key="title",
-                    css_styles="""
-                    {   
-                        text-align: center;
-                    }"""
-                ):
-                st.header("3C .Inc Key Performance Indicators Dashboard") 
-                st.header("🗃️ Data " + str(month_selected) + "/" + str(year_selected)+' 🗃️')  
-
-            st.markdown("---")
-        #-----------------------------------------------------------------------------------
-            st.subheader("1️⃣ Statistical Index")
-            st.markdown("###")
-            statistical_index(df_selection)
-            st.markdown("---")
-        #-----------------------------------------------------------------------------------     
-    else:
-        st.write("No data")
+            engine='openpyxl',
+            sheet_name='Data',
+            skiprows=3,
+            usecols='B:Q',
+            nrows=1000,
+    )
+    authenticator.logout("Log out","sidebar")
