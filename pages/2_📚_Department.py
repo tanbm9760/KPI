@@ -54,10 +54,16 @@ with stylable_container(
     st.header("3C .Inc Key Performance Indicators Dashboard - " + str(selected_month) + "/" + str(selected_year)) 
 st.markdown("---")
 #---------------------------------------------------------
+if "select_department" not in st.session_state:
+    st.session_state["select_department"] = "KD1"
+get_value("select_department")
 department = st.sidebar.multiselect(
     "Select Department",
     options=df["Department"].unique(),
     max_selections=3,
+    key= "_select_department",
+    args=["select_department"],
+    on_change=save_value,
 )
 df_selection = df.query(
     "Department == @department"
@@ -124,4 +130,5 @@ if department:
     )
 else:
     st.write("Please Select Department!")
+st.sidebar.markdown("---")
 authenticator.logout("Log out","sidebar")

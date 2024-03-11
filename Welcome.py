@@ -549,4 +549,5 @@ if authenticator_status == True:
             usecols='B:Q',
             nrows=1000,
     )
-    authenticator.logout("Log out","sidebar")
+st.sidebar.markdown("---")
+authenticator.logout("Log out","sidebar")

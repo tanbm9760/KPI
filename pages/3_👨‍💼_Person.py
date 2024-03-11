@@ -84,4 +84,5 @@ st.dataframe(
           "Note": st.column_config.TextColumn("Note", width="large"),
      }
     )
+st.sidebar.markdown("---")
 authenticator.logout("Log out","sidebar")
