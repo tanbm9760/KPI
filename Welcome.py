@@ -515,5 +515,4 @@ if authenticator_status == False:
 if authenticator_status == None:
     st.warning("Please enter your username and password")
 if authenticator_status == True:
-    st.title(f"Welcome {name} !")
-    st.write("This is a KPI analysis website, helping managers track, analyze and evaluate data collected from employee work results.")
+    st.switch_page("pages/1_🏠_Company.py")
