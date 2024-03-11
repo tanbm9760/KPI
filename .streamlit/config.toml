@@ -2,3 +2,5 @@
 base="dark"
 backgroundColor="#0b3a75"
 secondaryBackgroundColor="#15204e"
+[client]
+showSidebarNavigation = false

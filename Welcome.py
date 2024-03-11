@@ -499,16 +499,6 @@ with file_path.open("rb") as file:
     hashed_passwords = pickle.load(file)
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "kpi_dashboard", "abcdef", cookie_expiry_days=1)
 name, authenticator_status, username = authenticator.login("Login","main")
-current_month = datetime.now().month
-current_year = datetime.now().year
-month_selected = 0
-year_selected = 0
-if(current_month == 1):
-        default_month = 11
-        default_year = current_year - 1
-else:
-        default_month = current_month - 2
-        default_year = current_year
 #----CHECK_AUTHENTICATOR----
 if authenticator_status == False:
     st.error("Username/password is incorrect")

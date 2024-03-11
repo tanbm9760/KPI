@@ -31,11 +31,11 @@ year_selected = 0
 default_month = 0
 default_year = 0
 if(current_month == 1):
-        default_month = 11
-        default_year = current_year - 1
+    default_month = 11
+    default_year = current_year - 1
 else:
-        default_month = current_month - 2
-        default_year = current_year
+    default_month = current_month - 2
+    default_year = current_year
 if "select_month" not in st.session_state:
     st.session_state["select_month"] = default_month
 get_value("select_month")
@@ -44,8 +44,7 @@ selected_month = st.sidebar.selectbox(
         [1,2,3,4,5,6,7,8,9,10,11,12],
         key= "_select_month",
         args=["select_month"],
-        on_change=save_value,
-    )
+        on_change=save_value,)
 save_value("select_month")
 if "select_year" not in st.session_state:
     st.session_state["select_year"] = default_year
@@ -55,8 +54,7 @@ selected_year = st.sidebar.selectbox(
         list(range(default_year-2,default_year+2)),
         key= "_select_year",
         args=["select_year"],
-        on_change=save_value,
-    ) 
+        on_change=save_value,) 
 save_value("select_year")
 excel_name = './data/' + str(selected_year) + '-' + str(selected_month) +'.xlsx'
 checkfile = os.path.isfile(excel_name)
