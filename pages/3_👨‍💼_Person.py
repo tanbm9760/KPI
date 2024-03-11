@@ -10,7 +10,16 @@ def save_value(key):
 def get_value(key):
     st.session_state["_"+key] = st.session_state[key] 
 #---------------------------------------------------------
-
+current_month = datetime.now().month
+current_year = datetime.now().year
+month_selected = 0
+year_selected = 0
+if(current_month == 1):
+        default_month = 11
+        default_year = current_year - 1
+else:
+        default_month = current_month - 2
+        default_year = current_year
 if "select_month" not in st.session_state:
     st.session_state["select_month"] = default_month
 get_value("select_month")

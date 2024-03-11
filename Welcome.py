@@ -503,6 +503,12 @@ current_month = datetime.now().month
 current_year = datetime.now().year
 month_selected = 0
 year_selected = 0
+if(current_month == 1):
+        default_month = 11
+        default_year = current_year - 1
+else:
+        default_month = current_month - 2
+        default_year = current_year
 #----CHECK_AUTHENTICATOR----
 if authenticator_status == False:
     st.error("Username/password is incorrect")
@@ -511,12 +517,6 @@ if authenticator_status == None:
 if authenticator_status == True:
     st.title(f"Welcome {name} !")
     st.write("This is a KPI analysis website, helping managers track, analyze and evaluate data collected from employee work results.")
-    if(current_month == 1):
-        default_month = 11
-        default_year = current_year - 1
-    else:
-        default_month = current_month - 2
-        default_year = current_year
     if "select_month" not in st.session_state:
         st.session_state["select_month"] = default_month
     get_value("select_month")
@@ -533,7 +533,7 @@ if authenticator_status == True:
     get_value("select_year")
     selected_year = st.sidebar.selectbox(
         "Select Year",
-        list(range(default_year-2,default_year+2)),
+        [default_year-2,default_year-1,default_year,default_year+1,default_year+2],
         key= "_select_year",
         on_change=save_value,
         args=["select_year"]
@@ -549,5 +549,3 @@ if authenticator_status == True:
             usecols='B:Q',
             nrows=1000,
     )
-st.sidebar.markdown("---")
-authenticator.logout("Log out","sidebar")
