@@ -517,35 +517,3 @@ if authenticator_status == None:
 if authenticator_status == True:
     st.title(f"Welcome {name} !")
     st.write("This is a KPI analysis website, helping managers track, analyze and evaluate data collected from employee work results.")
-    if "select_month" not in st.session_state:
-        st.session_state["select_month"] = default_month
-    get_value("select_month")
-    selected_month = st.sidebar.selectbox(
-        "Select Month",
-        [1,2,3,4,5,6,7,8,9,10,11,12],
-        key= "_select_month",
-        on_change=save_value,
-        args=["select_month"]
-    )
-    save_value("select_month")
-    if "select_year" not in st.session_state:
-        st.session_state["select_year"] = default_year
-    get_value("select_year")
-    selected_year = st.sidebar.selectbox(
-        "Select Year",
-        [default_year-2,default_year-1,default_year,default_year+1,default_year+2],
-        key= "_select_year",
-        on_change=save_value,
-        args=["select_year"]
-    ) 
-    save_value("select_year")
-    excel_name = './data/' + str(selected_year) + '-' + str(selected_month) +'.xlsx'
-    checkfile = os.path.isfile(excel_name)
-    if checkfile == True:
-        df = pd.read_excel(io=excel_name, 
-            engine='openpyxl',
-            sheet_name='Data',
-            skiprows=3,
-            usecols='B:Q',
-            nrows=1000,
-    )

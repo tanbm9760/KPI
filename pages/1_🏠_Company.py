@@ -21,7 +21,7 @@ else:
         default_month = current_month - 2
         default_year = current_year
 if "select_month" not in st.session_state:
-    st.session_state["select_month"] = 1
+    st.session_state["select_month"] = 12
 get_value("select_month")
 selected_month = st.sidebar.selectbox(
         "Select Month",
