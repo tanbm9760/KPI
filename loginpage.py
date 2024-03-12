@@ -20,6 +20,10 @@ def save_value(key):
     st.session_state[key] = st.session_state["_"+key]
 def get_value(key):
     st.session_state["_"+key] = st.session_state[key] 
+def clear_cache():
+    keys = list(st.session_state.keys())
+    for key in keys:
+        st.session_state.pop(key)
 #-------------------------------------------------------------------
 def statistical_index(dataframe):
     #-total-
@@ -499,7 +503,7 @@ with col[1]:
     file_path = Path(__file__).parent / "hashed_pw.pkl"
     with file_path.open("rb") as file:
         hashed_passwords = pickle.load(file)
-    authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "kpi_dashboard", "abcdef", cookie_expiry_days=0)
+    authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "kpi_dashboard", "abcdef", cookie_expiry_days=1)
     name, authenticator_status, username = authenticator.login("Login","main")
     #----CHECK_AUTHENTICATOR----
     if authenticator_status == False:
@@ -507,4 +511,5 @@ with col[1]:
     if authenticator_status == None:
         st.warning("Please enter your username and password")
     if authenticator_status == True:
+        clear_cache()
         st.switch_page("pages/company.py")
