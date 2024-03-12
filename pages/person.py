@@ -90,13 +90,13 @@ if checkfile == True:
             }"""
         ):
         st.header("3C .Inc Key Performance Indicators Dashboard - " + str(selected_month) + "/" + str(selected_year)) 
-    st.markdown("---")
     #-----------------------------------------------------------------------------------
     name = st.sidebar.multiselect(
-        "Select Person",
-        options = df["Name"].unique(),
-        max_selections=1,
-    )
+            "Select Person",
+            options = df["Name"].unique(),
+            max_selections=1
+        )
+    st.markdown("---")
     df_selection = df.query(
         "Name == @name",
         )
