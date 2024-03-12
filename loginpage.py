@@ -510,19 +510,9 @@ def person_workbar(dataframe):
         textfont_size=10,
     )
     #-title- 
-    st.write("Works Bar Chart")
+    # st.write("Works Bar Chart")
     #-display-
-    with stylable_container(
-        key="chart",
-        css_styles="""
-        {   
-            border-radius: 0.5em;
-            border: 2px groove white;
-            box-shadow: rgba(255, 255, 255, 0.5) 0px 2px 4px 0px, rgba(38,151,215,0.4) 0px 2px 12px 0px;
-            background-color: rgba(38,151,215,0.4);
-        }"""
-    ):
-        st.plotly_chart(fig_person_bar,use_container_width=True)
+    st.plotly_chart(fig_person_bar,use_container_width=True)
 #-------------------------------------------------------------------
 #----------------------PAGE ENVIRONMENT-----------------------------
 #-------------------------------------------------------------------

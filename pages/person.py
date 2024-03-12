@@ -106,7 +106,9 @@ if checkfile == True:
     #-----------------------------------------------------------------------------------
     st.subheader("2️⃣ Works Chart")
     st.markdown("###")
-    person_workbar(df_selection)
+    cols = st.columns([1,2,1])
+    with cols[1]:
+        person_workbar(df_selection)
     st.markdown("---")
     #-----------------------------------------------------------------------------------  
     st.subheader("3️⃣ Data Frame")
@@ -120,7 +122,7 @@ if checkfile == True:
             "Kpi Works": st.column_config.ProgressColumn("KPI Works", format="%.2f", min_value=50, max_value=150),
             "Kpi Bonus": st.column_config.ProgressColumn("KPI Bonus", format="%.1f", min_value=-20, max_value=20),
             "Kpi Final": st.column_config.ProgressColumn("KPI Final", format="%.2f", min_value=50, max_value=150),
-            "Coefficient": st.column_config.ProgressColumn("KPI Coef", format="%.1f", min_value=0.0, max_value=2.0),
+            "Coefficient": st.column_config.ProgressColumn("KPI Coefficient", format="%.1f", min_value=0.0, max_value=2.0),
             "Note": st.column_config.TextColumn("Note", width="large"),
         }
         )
