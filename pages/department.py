@@ -18,6 +18,9 @@ st.set_page_config(page_title="KPI Dashboard WebApp",
                    page_icon=":bar_chart:",
                    layout="wide"
 )
+st.sidebar.page_link("pages/company.py", label="Company", icon="🏠")
+st.sidebar.page_link("pages/department.py", label="Department", icon="📚")
+st.sidebar.page_link("pages/person.py", label="Person", icon="👨‍💼")
 #---------------------------------------------------------
 def save_value(key):
     st.session_state[key] = st.session_state["_"+key]

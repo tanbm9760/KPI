@@ -490,19 +490,21 @@ st.set_page_config(page_title="KPI Dashboard WebApp",
                    page_icon=":bar_chart:",
                    layout="wide"
 )
-#----USER_AUTHENTICATION----
-names = ["Admin"]
-usernames = ["Admin"]
-#----LOAD_HASHEDPASSWORD----
-file_path = Path(__file__).parent / "hashed_pw.pkl"
-with file_path.open("rb") as file:
-    hashed_passwords = pickle.load(file)
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "kpi_dashboard", "abcdef", cookie_expiry_days=1)
-name, authenticator_status, username = authenticator.login("Login","main")
-#----CHECK_AUTHENTICATOR----
-if authenticator_status == False:
-    st.error("Username/password is incorrect")
-if authenticator_status == None:
-    st.warning("Please enter your username and password")
-if authenticator_status == True:
-    st.switch_page("pages/1_🏠_Company.py")
+col = st.columns([1,1,1])
+with col[1]:
+    #----USER_AUTHENTICATION----
+    names = ["Admin"]
+    usernames = ["Admin"]
+    #----LOAD_HASHEDPASSWORD----
+    file_path = Path(__file__).parent / "hashed_pw.pkl"
+    with file_path.open("rb") as file:
+        hashed_passwords = pickle.load(file)
+    authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "kpi_dashboard", "abcdef", cookie_expiry_days=0)
+    name, authenticator_status, username = authenticator.login("Login","main")
+    #----CHECK_AUTHENTICATOR----
+    if authenticator_status == False:
+        st.error("Username/password is incorrect")
+    if authenticator_status == None:
+        st.warning("Please enter your username and password")
+    if authenticator_status == True:
+        st.switch_page("pages/company.py")
