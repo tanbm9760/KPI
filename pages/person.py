@@ -1,6 +1,3 @@
-from loginpage import *
-import pickle
-import json
 from datetime import datetime
 from pathlib import Path
 import os.path
@@ -13,7 +10,7 @@ import streamlit_authenticator as stauth
 import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
-#---------------------------------------------------------
+from loginpage import *
 st.set_page_config(page_title="KPI Dashboard WebApp",
                    page_icon=":bar_chart:",
                    layout="wide"
@@ -106,8 +103,13 @@ if checkfile == True:
     st.markdown("###")
     statistical_index(df_selection)
     st.markdown("---")
+    #-----------------------------------------------------------------------------------
+    st.subheader("2️⃣ Works Chart")
+    st.markdown("###")
+    person_workbar(df_selection)
+    st.markdown("---")
     #-----------------------------------------------------------------------------------  
-    st.subheader("2️⃣ Data Frame")
+    st.subheader("3️⃣ Data Frame")
     st.markdown("###")   
     st.dataframe(
             df_selection,

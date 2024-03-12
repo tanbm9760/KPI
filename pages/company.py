@@ -1,6 +1,4 @@
 from loginpage import *
-import pickle
-import json
 from datetime import datetime
 from pathlib import Path
 import os.path
@@ -13,7 +11,6 @@ import streamlit_authenticator as stauth
 import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
-#---------------------------------------------------------
 st.set_page_config(page_title="KPI Dashboard WebApp",
                    page_icon=":bar_chart:",
                    layout="wide"

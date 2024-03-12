@@ -1,5 +1,4 @@
 import pickle
-import json
 from datetime import datetime
 from pathlib import Path
 import os.path
@@ -12,7 +11,9 @@ import streamlit_authenticator as stauth
 import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
-
+st.set_page_config(page_title="KPI Dashboard WebApp",
+                   page_icon=":bar_chart:",
+                   layout="wide")
 #-------------------------------------------------------------------
 #---------------------------FUNCTION--------------------------------
 #-------------------------------------------------------------------
@@ -354,8 +355,6 @@ def fig_kpifinal_his(dataframe):
     fig_kpifinal_his = px.histogram(
         dataframe, 
         x="Kpi Final",
-        # color='Department',
-        # color_discrete_sequence=px.colors.qualitative.Light24, 
         height= 400, 
         text_auto='.0f',
         )
@@ -369,7 +368,7 @@ def fig_kpifinal_his(dataframe):
         yaxis_title=None,
         margin=dict(t=20, r=40, b=0, l=40), 
         showlegend = False,)
-    fig_kpifinal_his.update_xaxes(dtick=5)
+    fig_kpifinal_his.update_xaxes(dtick=2)
     fig_kpifinal_his.update_traces(
         hoverinfo='x+y', textposition = 'outside', textfont_size=10, textangle = 0,
     )
@@ -487,13 +486,47 @@ def highlight_columns(col):
     color = 'rgba(255,127,14,0.7)' if col.name in ['Kpi Final', 'Coefficient'] else 'rgba(11,58,117,0.7)' 
     return ['background-color: {}'.format(color) for _ in col]
 #-------------------------------------------------------------------
+def person_workbar(dataframe):
+    fig_person_bar = px.bar(
+        data_frame=dataframe,
+        y="Name",
+        x=["Assigned","Urgent","Important","Completed","Late","Out of date"],
+        height=250,
+        barmode="group",
+        orientation='h',
+        text_auto='.0f',
+        color_discrete_sequence=["rgb(220,220,220)","rgb(38,151,215)","rgb(255,127,14)","rgb(44,160,44)","rgb(214,39,40)","rgb(148,103,189)"]
+    )
+    fig_person_bar.update_layout(                   
+        {'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)'}
+    )
+    fig_person_bar.update_layout(
+        xaxis_title=None,
+        yaxis_title=None,
+        margin=dict(t=20, r=100, b=0, l=20), 
+    )
+    fig_person_bar.update_traces(
+        textposition = 'outside', 
+        textfont_size=10,
+    )
+    #-title- 
+    st.write("Works Bar Chart")
+    #-display-
+    with stylable_container(
+        key="chart",
+        css_styles="""
+        {   
+            border-radius: 0.5em;
+            border: 2px groove white;
+            box-shadow: rgba(255, 255, 255, 0.5) 0px 2px 4px 0px, rgba(38,151,215,0.4) 0px 2px 12px 0px;
+            background-color: rgba(38,151,215,0.4);
+        }"""
+    ):
+        st.plotly_chart(fig_person_bar,use_container_width=True)
+#-------------------------------------------------------------------
 #----------------------PAGE ENVIRONMENT-----------------------------
 #-------------------------------------------------------------------
 #----PAGE_CONFIG----
-st.set_page_config(page_title="KPI Dashboard WebApp",
-                   page_icon=":bar_chart:",
-                   layout="wide"
-)
 col = st.columns([1,1,1])
 with col[1]:
     #----USER_AUTHENTICATION----
